@@ -1,0 +1,126 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+
+html {
+  box-sizing: border-box;
+}
+
+* {
+  outline: none;
+  font-family: "Poppins", sans-serif;
+  text-decoration: none;
+}
+
+a {
+  color: var(--black);
+}
+
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --purple: #4f024f;
+  --gray: #9d9d9d;
+  --red: #ea5d4b;
+}
+
+body {
+  margin: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.hide {
+  display: none;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1320px;
+  }
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.button {
+  text-transform: uppercase;
+  background-color: var(--black);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 800;
+  padding: 6px 41px;
+  cursor: pointer;
+}
+
+.button.outline {
+  background-color: transparent;
+  border: 2px solid var(--white);
+  color: var(--white);
+  padding: 6px 25px;
+}
+
+.button.outline--reverse {
+  background-color: transparent;
+  border: 2px solid var(--black);
+  color: var(--black);
+  padding: 6px 25px;
+}
+
+.button.outline--reverse:hover {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.buttons__cta {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.buttons__cta .button {
+  margin-right: 16px;
+  min-width: 140px;
+  padding: 6px 16px;
+}
+
+h1.normal {
+  font-weight: normal;
+}
+
+h5 {
+  font-size: 14px;
+  margin: 0 0 7px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+h5.gray {
+  color: var(--gray);
+  text-transform: initial;
+  font-weight: normal;
+}
