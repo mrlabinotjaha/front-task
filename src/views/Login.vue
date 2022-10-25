@@ -9,10 +9,17 @@
           <form>
             <Input title="Username" type="email" v-model="username" />
             <Input title="Password" type="password" v-model="password" />
-            <p v-show="wrongUsernameOrPassword" class="error">
-              Wrong Username or Password
+            <p v-show="true" class="error">
+              {{ errorMsg }}
             </p>
-            <button class="button" @click="login">Log in</button>
+            
+            <div class="login__cta"> 
+              <button class="button" @click="login">Log in</button>
+              <span>or</span>
+              <router-link :to="{ name: 'Register' }">
+                <h3>Register</h3></router-link
+              >
+            </div>
           </form>
         </div>
       </div>
@@ -33,7 +40,7 @@ export default {
     return {
       username: "",
       password: "",
-      wrongUsernameOrPassword: false,
+      errorMsg: "",
     };
   },
   computed: {
@@ -52,30 +59,24 @@ export default {
         password: this.password,
       };
 
-      let response = await axios.post(
-        "https://february-21.herokuapp.com/api-token-auth/",
-        data
-      );
-
-      localStorage.setItem("token", response.data.token);
-
-      this.$router.push({ name: "Home" });
-
-      console.log(localStorage.getItem("token"));
-
-      // if (
-      //   this.username === this.auth.username &&
-      //   this.password === this.auth.password
-      // ) {
-      //   this.logIn();
-      //   this.$router.push("/");
-      // } else {
-      //   this.wrongUsernameOrPassword = true;
-      // }
+      try {
+        let response = await axios.post("https://february-21.herokuapp.com/api-token-auth/", data);
+        console.log(response)
+        localStorage.setItem("token", response.data.token);
+        this.logIn();
+        axios.defaults.headers.common["Authorization"] = `Token ${localStorage.getItem(
+          "token"
+        )}`;
+        this.$router.push({ name: "Home" });
+      } catch ( err ) {
+        console.log(err)
+        console.log(err.response.data);
+        this.errorMsg = Object.keys(err.response.data)[0] + ', ' + Object.values(err.response.data)[0]
+      }
     },
   },
   mounted() {
-    this.getUser();
+    // this.getUser();
   },
 };
 </script>

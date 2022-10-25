@@ -59,6 +59,26 @@ body {
   }
 }
 
+.cards__wrapper {
+  padding-bottom: 20px;
+  margin-top: 96px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  display: grid;
+  grid-auto-rows: 250px;
+  grid-column-gap: 36px;
+  grid-row-gap: 36px;
+}
+
+.login__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login__cta span {
+    margin: 0 8px;
+}
+
 .error {
   color: red;
   font-size: 14px;

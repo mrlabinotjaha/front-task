@@ -46,14 +46,8 @@ export default {
       wrongUsernameOrPassword: false,
     };
   },
-  computed: {
-    ...mapState({
-      checkoutStatus: (state) => state.login.isLogged,
-      auth: (state) => state.login.auth,
-    }),
-  },
   methods: {
-    ...mapActions(["getUser", "logIn"]),
+    // ...mapActions(["getUser", "logIn"]),
 
     async handleSubmit(e) {
       e.preventDefault();
@@ -67,16 +61,31 @@ export default {
       };
 
       let response = await axios.post("users/", data);
-      console.log("response", response);
+
+      if (response.status === 201) {
+        localStorage.setItem("token", response.data.auth_token); 
+        this.$router.push({ name: "Home" });
+      }
+
+
+      this.clearInputs()
     },
+
+    clearInputs() {
+      this.username = "";
+      this.password = "";
+      this.firstName = "";
+      this.lastName = "";
+      this.email = "";
+    }
   },
   mounted() {
-    this.getUser();
+    // this.getUser();
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .login__wrapper {
   padding: 0 15px;
   height: 100%;
@@ -86,15 +95,8 @@ export default {
 .login__form {
   margin-top: 40px;
   text-align: center;
-  .login__cta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    span {
-      margin: 0 8px;
-    }
-  }
 }
+
 .login__intro {
   text-align: center;
   h3 {

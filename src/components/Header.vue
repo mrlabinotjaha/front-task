@@ -9,7 +9,7 @@
         </div>
 
         <!-- <button v-show="isLogged()" class="button outline" @click="logout">Sign out</button> -->
-        <button class="button outline" :class="{ hide: false }">Logout</button>
+        <button class="button outline" @click="logout" :class="{ hide: false }">Logout</button>
       </header>
     </div>
   </nav>
@@ -36,7 +36,6 @@ export default {
     logout() {
       this.logOut();
       this.$router.push("/login");
-      localStorage.clear();
     },
   },
 };

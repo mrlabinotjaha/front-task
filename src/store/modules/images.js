@@ -3,6 +3,7 @@ import axios from "axios";
 const state = {
   images: [],
   quotes: [],
+  lastRequest: false,
 };
 
 const getters = {
@@ -17,17 +18,24 @@ const mutations = {
   SET_QUOTES(state, payload) {
     state.quotes.push(...payload);
   },
+  LAST_REQUEST(state, payload) {
+    state.lastRequest = payload;
+  },
+  LAST_REQUEST_RESET(state) {
+    state.lastRequest = false;
+  }
 };
 
 const actions = {
-  async getImages({ commit }) {
+  async getImages({ commit },  { pageNumber } ) {
     try {
-      let response = await axios.get("/suppliers/?page=1");
+      let response = await axios.get(`/suppliers/?page=${pageNumber}`);
       const data = await response.data.results;
       commit("SET_IMAGE", data);
       return data;
     } catch (error) {
       console.error(error);
+      commit("LAST_REQUEST", true);
     }
   },
 
@@ -39,8 +47,12 @@ const actions = {
       return data;
     } catch (error) {
       console.error(error);
+      commit("LAST_REQUEST", true);
     }
   },
+  lastRequestReset() {
+    commit("LAST_REQUEST_RESET");
+  }
 };
 
 export default {

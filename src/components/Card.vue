@@ -1,11 +1,18 @@
 <template>
   <article class="card">
-    <router-link :to="{ name: 'Supplier', params: { id: item.id } }">
-      <p>ID: #{{ item.supplier_id }}</p>
+    <div v-if="endpoint == 'suppliers'">
+      <router-link :to="{ name: 'Supplier', params: { id: item.id } }">
+        <p>ID: #{{ item.id }}</p>
+        <h1>Name: {{ item.name }}</h1>
+        <h4>Description: {{ item.description }}</h4>
+      </router-link>
+    </div>
+    <div v-else>
+      <p>ID: #{{ item.id }}</p>
       <h1>Amount: {{ item.amount }}</h1>
       <h4>Title: {{ item.title }}</h4>
       <h5>Created: {{ formatDate }}</h5>
-    </router-link>
+    </div>
   </article>
 </template>
 
@@ -32,6 +39,9 @@ export default {
     item: {
       required: true,
     },
+    endpoint: {
+      required: true,
+    }
   },
   methods: {
     closed({ showModal }) {

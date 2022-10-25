@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import store from "@/store";
+import { instance } from "../axios"
 
 const routes = [
   {
@@ -18,12 +19,6 @@ const routes = [
     path: "/supplier/:id",
     name: "Supplier",
     component: () => import("../views/Supplier.vue"),
-    meta: { auth: true },
-  },
-  {
-    path: "/album/:id",
-    name: "Album",
-    component: () => import("../views/Album.vue"),
     meta: { auth: true },
   },
   {
@@ -50,15 +45,16 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   const isUserLoggedIn = store.state.login.isLogged;
-//   if (to.meta.auth && !isUserLoggedIn) {
-//     next("/login");
-//   } else if (!to.meta.auth && isUserLoggedIn) {
-//     next("/");
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  const isUserLoggedIn = store.state.login.isLogged;
+  if (to.meta.auth && !isUserLoggedIn) {
+    next("/login");
+  } else if (!to.meta.auth && isUserLoggedIn) {
+    next("/");
+  } else {
+
+    next();
+  }
+});
 
 export default router;
