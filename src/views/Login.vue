@@ -8,12 +8,15 @@
         <div class="login__form">
           <form>
             <Input title="Username" type="email" v-model="username" />
-            <Input title="Password" type="password" v-model="password" />
-            <p v-show="true" class="error">
-              {{ errorMsg }}
+            <p class="error">
+              {{ valUsername }}
             </p>
-            
-            <div class="login__cta"> 
+            <Input title="Password" type="password" v-model="password" />
+            <p class="error">
+              {{ valPassword }}
+            </p>
+
+            <div class="login__cta">
               <button class="button" @click="login">Log in</button>
               <span>or</span>
               <router-link :to="{ name: 'Register' }">
@@ -40,8 +43,17 @@ export default {
     return {
       username: "",
       password: "",
-      errorMsg: "",
+      valUsername: "",
+      valPassword: "",
     };
+  },
+  watch: {
+    username() {
+      this.valUsername = "";
+    },
+    password() {
+      this.valPassword = "";
+    },
   },
   computed: {
     ...mapState({
@@ -60,18 +72,26 @@ export default {
       };
 
       try {
-        let response = await axios.post("https://february-21.herokuapp.com/api-token-auth/", data);
-        console.log(response)
+        let response = await axios.post(
+          "https://february-21.herokuapp.com/api-token-auth/",
+          data
+        );
         localStorage.setItem("token", response.data.token);
         this.logIn();
-        axios.defaults.headers.common["Authorization"] = `Token ${localStorage.getItem(
-          "token"
-        )}`;
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Token ${localStorage.getItem("token")}`;
         this.$router.push({ name: "Home" });
-      } catch ( err ) {
-        console.log(err)
-        console.log(err.response.data);
-        this.errorMsg = Object.keys(err.response.data)[0] + ', ' + Object.values(err.response.data)[0]
+      } catch (err) {
+        Object.keys(err.response.data).forEach((key) => {
+          if (key === "username") {
+            this.valUsername = err.response.data[key][0];
+          } else if (key === "password") {
+            this.valPassword = err.response.data[key][0];
+          } else if (key === "non_field_errors") {
+            this.valPassword = err.response.data[key][0];
+          }
+        });
       }
     },
   },

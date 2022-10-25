@@ -7,8 +7,24 @@
         </div>
         <div class="login__form">
           <form>
-            <Input title="Username" type="email" v-model="username" />
-            <Input title="Password" type="password" v-model="password" />
+            <Input
+              title="Username"
+              type="email"
+              v-model="username"
+              :required="true"
+            />
+            <p class="error">
+              {{ valUsername }}
+            </p>
+            <Input
+              title="Password"
+              type="password"
+              v-model="password"
+              :required="true"
+            />
+            <p class="error">
+              {{ valPassword }}
+            </p>
             <Input title="First Name" type="text" v-model="firstName" />
             <Input title="Last Name" type="text" v-model="lastName" />
             <Input title="Email" type="Email" v-model="email" />
@@ -29,7 +45,6 @@
 
 <script>
 import Input from "@/components/Input.vue";
-import { mapActions, mapState } from "vuex";
 import axios from "axios";
 
 export default {
@@ -43,12 +58,19 @@ export default {
       firstName: "",
       lastName: "",
       email: "",
-      wrongUsernameOrPassword: false,
+      valUsername: "",
+      valPassword: "",
     };
   },
+  watch: {
+    username() {
+      this.valUsername = "";
+    },
+    password() {
+      this.valPassword = "";
+    },
+  },
   methods: {
-    // ...mapActions(["getUser", "logIn"]),
-
     async handleSubmit(e) {
       e.preventDefault();
 
@@ -60,15 +82,24 @@ export default {
         email: this.email,
       };
 
-      let response = await axios.post("users/", data);
+      try {
+        await axios.post("users/", data);
+      } catch (err) {
+        Object.keys(err.response.data).forEach((key) => {
+          if (key === "username") {
+            this.valUsername = err.response.data[key][0];
+          } else if (key === "password") {
+            this.valPassword = err.response.data[key][0];
+          }
+        });
+      }
 
       if (response.status === 201) {
-        localStorage.setItem("token", response.data.auth_token); 
+        localStorage.setItem("token", response.data.auth_token);
         this.$router.push({ name: "Home" });
       }
 
-
-      this.clearInputs()
+      this.clearInputs();
     },
 
     clearInputs() {
@@ -77,15 +108,12 @@ export default {
       this.firstName = "";
       this.lastName = "";
       this.email = "";
-    }
-  },
-  mounted() {
-    // this.getUser();
+    },
   },
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .login__wrapper {
   padding: 0 15px;
   height: 100%;

@@ -1,13 +1,18 @@
 <template>
   <div class="container">
     <section class="cards__wrapper">
-      <Card v-for="item in imagesObject" :key="item.id" :item="item" :endpoint="'suppliers'"/>
+      <Card
+        v-for="item in suppliersObject"
+        :key="item.id"
+        :item="item"
+        :endpoint="'suppliers'"
+      />
     </section>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters,mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import Card from "@/components/Card.vue";
 
 export default {
@@ -15,7 +20,6 @@ export default {
   data() {
     return {
       pageNumber: 1,
-      pageSize: 30,
       end: false,
     };
   },
@@ -24,21 +28,21 @@ export default {
   },
   computed: {
     ...mapState({
-      lastRequest: (state) => state.images.lastRequest,
+      lastRequest: (state) => state.api.lastRequest,
     }),
-    ...mapGetters("images", ["imagesObject"]),
+    ...mapGetters("api", ["suppliersObject"]),
   },
   methods: {
-    ...mapActions("images", ["getImages"]),
+    ...mapActions("api", ["getSuppliers", "lastRequestReset"]),
 
     async handleScroll() {
-      if ( this.end === true ) return;
-      if ( this.lastRequest === true ) return;
+      if (this.end) return;
+      if (this.lastRequest === true) return;
 
-      if ( window.innerHeight + window.scrollY >= document.body.offsetHeight ) {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
         this.pageNumber += 1;
         this.end = true;
-        await this.getImages({
+        await this.getSuppliers({
           pageNumber: this.pageNumber,
         });
         this.end = false;
@@ -46,15 +50,16 @@ export default {
     },
   },
   async mounted() {
-    this.getImages({  pageNumber: this.pageNumber });
+    this.getSuppliers({ pageNumber: this.pageNumber });
     window.addEventListener("scroll", this.handleScroll);
   },
   beforeUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   },
+  beforeRouteLeave() {
+    this.lastRequestReset();
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

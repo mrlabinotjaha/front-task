@@ -1,54 +1,66 @@
 <template>
   <div class="input__wrapper">
-    <h5>{{ title }}</h5>
-    <input @input="$emit('update:modelValue', $event.target.value)" :value="modelValue" class="input" :type="type" :placeholder="`Enter ${title} here . . .`">
+    <h5>{{ title }} <span v-show="required">*</span></h5>
+    <input
+      @input="$emit('update:modelValue', $event.target.value)"
+      :value="modelValue"
+      class="input"
+      :type="type"
+      :placeholder="`Enter ${title} here . . .`"
+    />
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
     modelValue: {
       required: true,
-      type: String 
+      type: String,
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
     title: {
       required: true,
-      type: String ,
-      default: 'Input'
+      type: String,
+      default: "Input",
     },
     type: {
       required: true,
       type: String,
-      default: 'text'
+      default: "text",
     },
   },
-  emits: ['update:modelValue'],
+  emits: ["update:modelValue"],
   computed: {
     validateEmail() {
-      if( this.type === 'email' && this.modelValue !== 'test@msn.com') {
-        return true
+      if (this.type === "email" && this.modelValue !== "test@msn.com") {
+        return true;
       }
-      return false
-    }
-  }
-  }
+      return false;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  .input__wrapper {
-    margin-bottom: 40px;
+.input__wrapper {
+  margin-bottom: 40px;
+  span {
+    color: var(--red);
   }
-  .input {
-    border: 2px solid var(--black);
-    padding: 14px 16px;
-    min-width: 327px;
-    &::placeholder {
-      font-size: 16px;
-      letter-spacing: 0.32px;
-      color: var(--gray);
-      opacity: 1;
-    }
+}
+.input {
+  border: 2px solid var(--black);
+  padding: 14px 16px;
+  min-width: 327px;
+  &::placeholder {
+    font-size: 16px;
+    letter-spacing: 0.32px;
+    color: var(--gray);
+    opacity: 1;
   }
+}
 </style>

@@ -1,7 +1,12 @@
 <template>
   <div class="container">
     <section class="cards__wrapper">
-      <Card v-for="item in quotesObject" :key="item.id" :item="item" :endpoint="'quotes'" />
+      <Card
+        v-for="item in quotesObject"
+        :key="item.id"
+        :item="item"
+        :endpoint="'quotes'"
+      />
     </section>
   </div>
 </template>
@@ -15,7 +20,6 @@ export default {
   data() {
     return {
       pageNumber: 1,
-      pageSize: 30,
       end: false,
     };
   },
@@ -26,15 +30,15 @@ export default {
     ...mapState({
       lastRequest: (state) => state.images.lastRequest,
     }),
-    ...mapGetters("images", ["quotesObject"]),
+    ...mapGetters("api", ["quotesObject"]),
   },
   methods: {
-    ...mapActions("images", ["getQuotes", "lastRequestReset"]),
+    ...mapActions("api", ["getQuotes", "lastRequestReset"]),
     async handleScroll() {
-      if ( this.end ) return;
-      if ( this.lastRequest === true ) return;
+      if (this.end) return;
+      if (this.lastRequest === true) return;
 
-      if ( window.innerHeight + window.scrollY >= document.body.offsetHeight ) {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
         this.pageNumber += 1;
         this.end = true;
         await this.getQuotes({
@@ -45,14 +49,14 @@ export default {
     },
   },
   async mounted() {
-    await this.getQuotes();
+    await this.getQuotes({ pageNumber: this.pageNumber });
     window.addEventListener("scroll", this.handleScroll);
   },
   beforeUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   },
   beforeRouteLeave() {
-    this.lastRequestReset()
+    this.lastRequestReset();
   },
 };
 </script>

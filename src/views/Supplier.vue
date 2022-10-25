@@ -29,7 +29,6 @@ export default {
     async getDetails() {
       const id = this.$route.params.id;
       const response = await axios(`suppliers/${id}/`);
-      console.log(response.data);
       const data = await response.data;
       this.details = data;
     },

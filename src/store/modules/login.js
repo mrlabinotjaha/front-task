@@ -2,10 +2,6 @@ const state = {
   isLogged: false,
 };
 
-const getters = {
-  isLogged: (state) => state.isLogged,
-};
-
 const mutations = {
   SET_LOGIN(state, payload) {
     state.isLogged = payload;

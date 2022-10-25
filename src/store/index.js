@@ -1,12 +1,10 @@
-import { createStore } from 'vuex'
-import login from './modules/login'
-import images from './modules/images'
-import albums from './modules/albums'
+import { createStore } from "vuex";
+import login from "./modules/login";
+import api from "./modules/api";
 
 export default createStore({
   modules: {
     login,
-    images,
-    albums
-  }
-})
+    api,
+  },
+});

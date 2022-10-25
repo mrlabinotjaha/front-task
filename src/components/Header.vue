@@ -3,13 +3,17 @@
     <div class="container">
       <header class="header">
         <h1><router-link to="/">February 21</router-link></h1>
-        <div class="nav__links">
+        <div class="nav__links" :class="{ hide: !checkoutStatus }">
           <router-link to="/">Suppliers</router-link>
           <router-link to="/quotes">Quotes</router-link>
         </div>
-
-        <!-- <button v-show="isLogged()" class="button outline" @click="logout">Sign out</button> -->
-        <button class="button outline" @click="logout" :class="{ hide: false }">Logout</button>
+        <button
+          class="button outline"
+          @click="logout"
+          :class="{ hide: !checkoutStatus }"
+        >
+          Logout
+        </button>
       </header>
     </div>
   </nav>

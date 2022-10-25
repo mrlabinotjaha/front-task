@@ -34,7 +34,7 @@ body {
 }
 
 .hide {
-  display: none;
+  display: none !important;
 }
 
 .container {
@@ -76,7 +76,7 @@ body {
 }
 
 .login__cta span {
-    margin: 0 8px;
+  margin: 0 8px;
 }
 
 .error {
@@ -143,4 +143,8 @@ h5.gray {
   color: var(--gray);
   text-transform: initial;
   font-weight: normal;
+}
+
+.router-link-active {
+  text-decoration: underline !important;
 }
